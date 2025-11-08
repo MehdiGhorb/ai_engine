@@ -35,6 +35,13 @@ Action: character faces RIGHT and walks continuously RIGHTWARD (i.e., moves from
 Constraints: no additional background elements, no shadows or special effects, do not crop or alter the character's clothing.
 `.trim(),
 
+  'jump': `
+Full body. Use the uploaded image as the exact character reference (keep clothing, hair and colors).
+Camera: front view at a fixed offset (no zoom, no rotation). The camera must not move or track.
+Action: character performs a simple vertical jump repeatedly in a smooth looping motion. The character should bend knees slightly before jumping and land softly, returning to the starting position each time. No horizontal movement or rotation.
+Constraints: no additional background elements, no shadows or special effects, do not crop or alter the character's clothing.
+`.trim(),
+
   'idle': `
 Full body. Use the uploaded image as the exact character reference (keep clothing, hair and colors).
 Camera: front view at a fixed offset (no zoom, no rotation). The camera must not move or track.

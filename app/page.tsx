@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-type MovementState = 'walk-forward' | 'walk-backward' | 'walk-left' | 'walk-right' | 'idle';
+type MovementState = 'walk-forward' | 'walk-backward' | 'walk-left' | 'walk-right' | 'jump' | 'idle';
 
 type VideoLibrary = {
   [key: string]: string;
@@ -124,8 +124,8 @@ export default function Home() {
     }
   };
 
-  // Check if all 5 videos are ready
-  const allVideosReady = ['walk-forward', 'walk-backward', 'walk-left', 'walk-right', 'idle'].every(
+  // Check if all 6 videos are ready
+  const allVideosReady = ['walk-forward', 'walk-backward', 'walk-left', 'walk-right', 'jump', 'idle'].every(
     dir => generationProgress[dir] === true
   );
 
@@ -136,14 +136,14 @@ export default function Home() {
       const successCount = Object.values(generationProgress).filter(v => v === true).length;
       const failedCount = totalVideos - successCount;
       
-      if (successCount === 5) {
-        setStatusMessage('✅ All 5 videos ready! Use W/A/S/D to control character');
+      if (successCount === 6) {
+        setStatusMessage('✅ All 6 videos ready! Use W/A/S/D to move, SPACE to jump');
         setCurrentState('idle');
-      } else if (successCount >= 3) {
-        setStatusMessage(`⚠️ ${successCount}/5 videos ready (${failedCount} failed/timeout). You can still play!`);
+      } else if (successCount >= 4) {
+        setStatusMessage(`⚠️ ${successCount}/6 videos ready (${failedCount} failed/timeout). You can still play!`);
         setCurrentState('idle');
       } else {
-        setStatusMessage(`❌ Only ${successCount}/5 videos ready. Try uploading a different image.`);
+        setStatusMessage(`❌ Only ${successCount}/6 videos ready. Try uploading a different image.`);
       }
     } else if (videosReady > 0 && totalVideos > 0) {
       setStatusMessage(`Generating videos... ${videosReady}/${totalVideos} complete`);
@@ -190,6 +190,7 @@ export default function Home() {
       else if (key === 's') newState = 'walk-backward';
       else if (key === 'a') newState = 'walk-left';
       else if (key === 'd') newState = 'walk-right';
+      else if (key === ' ') newState = 'jump';
 
       if (newState) {
         changeState(newState);
@@ -305,6 +306,10 @@ export default function Home() {
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">D</div>
                     <span className="text-purple-200">Right</span>
+                  </div>
+                  <div className="flex items-center space-x-3 col-span-2">
+                    <div className="w-20 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-xs">SPACE</div>
+                    <span className="text-purple-200">Jump</span>
                   </div>
                 </div>
                 <div className="mt-4 pt-4 border-t border-white/20">
