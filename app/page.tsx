@@ -217,22 +217,43 @@ export default function Home() {
   }, [allVideosReady, currentState, videos]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-white mb-4">
-            AI Character Engine
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 p-4 md:p-8">
+      {/* Animated background effect */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
+        <div className="text-center mb-8 md:mb-12">
+          <div className="inline-block mb-4">
+            <div className="flex items-center gap-3 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 px-6 py-2 rounded-full border border-cyan-500/30 backdrop-blur-sm">
+              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+              <span className="text-cyan-300 text-sm font-semibold tracking-wider uppercase">AI Powered</span>
+            </div>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mb-4 drop-shadow-lg">
+            Gaming Character Simulator
           </h1>
-          <p className="text-purple-200 text-lg">
-            Professional character controller with smooth transitions
+          <p className="text-slate-300 text-base md:text-lg max-w-2xl mx-auto">
+            Transform any image into a fully interactive gaming character with AI-powered motion generation
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Panel */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+          {/* Left Panel - Controls & Upload */}
           <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <h2 className="text-2xl font-semibold text-white mb-4">Upload Character</h2>
+            {/* Upload Card */}
+            <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl hover:border-cyan-500/30 transition-all duration-300">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-white">Character Upload</h2>
+              </div>
               
               <input
                 ref={fileInputRef}
@@ -245,93 +266,145 @@ export default function Home() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isGenerating}
-                className="w-full py-4 px-6 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-xl font-semibold transition-all"
+                className="w-full py-4 px-6 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-gray-700 disabled:to-gray-800 disabled:cursor-not-allowed text-white rounded-2xl font-bold transition-all duration-300 shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3"
               >
-                {selectedFile ? 'Change Image' : 'Select Image'}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                {selectedFile ? 'Change Character Image' : 'Select Character Image'}
               </button>
 
               {previewUrl && (
-                <div className="mt-4 rounded-xl overflow-hidden border-2 border-white/30">
+                <div className="mt-5 rounded-2xl overflow-hidden border-2 border-slate-700 hover:border-cyan-500/50 transition-all duration-300 shadow-lg">
                   <img src={previewUrl} alt="Preview" className="w-full h-64 object-cover" />
                 </div>
               )}
             </div>
 
+            {/* Generate Button */}
             {selectedFile && !allVideosReady && (
               <button
                 onClick={handleGenerate}
                 disabled={isGenerating}
-                className="w-full py-6 px-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-700 text-white text-xl rounded-2xl font-bold transition-all shadow-2xl"
+                className="w-full py-7 px-8 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:from-purple-500 hover:via-pink-500 hover:to-red-500 disabled:from-gray-700 disabled:to-gray-800 text-white text-xl rounded-2xl font-black transition-all duration-300 shadow-2xl hover:shadow-purple-500/50 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 relative overflow-hidden"
               >
-                {isGenerating ? 'Generating...' : 'Generate Movement System'}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
+                <svg className="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <span className="relative z-10">{isGenerating ? 'Generating Motion AI...' : '🎮 Generate Character'}</span>
               </button>
             )}
 
+            {/* Status Message */}
             {statusMessage && (
-              <div className="bg-blue-500/20 backdrop-blur-md rounded-2xl p-6 border border-blue-500/50">
-                <p className="text-blue-200 mb-2">{statusMessage}</p>
-                {isGenerating && (
-                  <div className="mt-3">
-                    <div className="flex justify-between text-sm text-white mb-2">
-                      <span>Progress</span>
-                      <span>{videosReady} / {totalVideos}</span>
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
-                      <div 
-                        className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all"
-                        style={{ width: `${(videosReady / totalVideos) * 100}%` }}
-                      />
-                    </div>
+              <div className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 backdrop-blur-xl rounded-2xl p-6 border border-blue-500/30 shadow-xl">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1">
+                    {isGenerating ? (
+                      <div className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                      <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    )}
                   </div>
-                )}
+                  <div className="flex-1">
+                    <p className="text-blue-100 leading-relaxed">{statusMessage}</p>
+                    {isGenerating && (
+                      <div className="mt-4">
+                        <div className="flex justify-between text-sm text-blue-200 mb-2 font-semibold">
+                          <span>Processing</span>
+                          <span>{videosReady} / {totalVideos} complete</span>
+                        </div>
+                        <div className="w-full bg-slate-800/50 rounded-full h-3 overflow-hidden shadow-inner">
+                          <div 
+                            className="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500 relative overflow-hidden"
+                            style={{ width: `${(videosReady / totalVideos) * 100}%` }}
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
+            {/* Controls Card */}
             {allVideosReady && (
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <h3 className="text-xl font-semibold text-white mb-4">Controls</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">W</div>
-                    <span className="text-purple-200">Forward</span>
+              <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+                    </svg>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">S</div>
-                    <span className="text-purple-200">Backward</span>
+                  <h3 className="text-2xl font-bold text-white">Game Controls</h3>
+                </div>
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="flex items-center gap-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700 hover:border-cyan-500/50 transition-all">
+                    <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-black text-lg shadow-lg">W</div>
+                    <span className="text-slate-300 font-semibold">Forward</span>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">A</div>
-                    <span className="text-purple-200">Left</span>
+                  <div className="flex items-center gap-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700 hover:border-cyan-500/50 transition-all">
+                    <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-black text-lg shadow-lg">S</div>
+                    <span className="text-slate-300 font-semibold">Backward</span>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">D</div>
-                    <span className="text-purple-200">Right</span>
+                  <div className="flex items-center gap-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700 hover:border-cyan-500/50 transition-all">
+                    <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-black text-lg shadow-lg">A</div>
+                    <span className="text-slate-300 font-semibold">Left</span>
                   </div>
-                  <div className="flex items-center space-x-3 col-span-2">
-                    <div className="w-20 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-xs">SPACE</div>
-                    <span className="text-purple-200">Jump</span>
+                  <div className="flex items-center gap-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700 hover:border-cyan-500/50 transition-all">
+                    <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-black text-lg shadow-lg">D</div>
+                    <span className="text-slate-300 font-semibold">Right</span>
+                  </div>
+                  <div className="flex items-center gap-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700 hover:border-green-500/50 transition-all col-span-2">
+                    <div className="w-24 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center text-white font-black text-sm shadow-lg">SPACE</div>
+                    <span className="text-slate-300 font-semibold">Jump</span>
                   </div>
                 </div>
-                <div className="mt-4 pt-4 border-t border-white/20">
-                  <p className="text-purple-200 text-sm">
-                    Current: <span className="text-white font-bold">{currentState}</span>
-                  </p>
+                <div className="pt-4 border-t border-slate-700">
+                  <div className="flex items-center justify-between bg-gradient-to-r from-purple-900/30 to-pink-900/30 p-4 rounded-xl border border-purple-500/30">
+                    <span className="text-slate-300 font-semibold">Current Action:</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 font-black text-lg uppercase tracking-wider">{currentState}</span>
+                  </div>
                 </div>
               </div>
             )}
 
+            {/* Error Message */}
             {error && (
-              <div className="bg-red-500/20 backdrop-blur-md rounded-2xl p-6 border border-red-500/50">
-                <p className="text-red-200">{error}</p>
+              <div className="bg-gradient-to-br from-red-900/40 to-orange-900/40 backdrop-blur-xl rounded-2xl p-6 border border-red-500/50 shadow-xl">
+                <div className="flex items-start gap-3">
+                  <svg className="w-6 h-6 text-red-400 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-red-100 leading-relaxed">{error}</p>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Right Panel */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-            <h2 className="text-2xl font-semibold text-white mb-4">Character View</h2>
+          {/* Right Panel - Character View */}
+          <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl lg:sticky lg:top-8 h-fit">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-red-600 rounded-xl flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-white">Live Preview</h2>
+              {allVideosReady && (
+                <div className="ml-auto flex items-center gap-2 bg-green-500/20 px-3 py-1 rounded-full border border-green-500/30">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-green-300 text-xs font-bold uppercase">Live</span>
+                </div>
+              )}
+            </div>
             
-            <div className="relative aspect-video bg-black rounded-xl overflow-hidden border-2 border-white/30">
+            <div className="relative aspect-video bg-gradient-to-br from-slate-900 to-black rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl">
               {videos[currentState] ? (
                 <video
                   ref={videoRef}
@@ -343,15 +416,31 @@ export default function Home() {
                   className="w-full h-full object-contain"
                 />
               ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                <div className="absolute inset-0 flex items-center justify-center">
                   {isGenerating ? (
                     <div className="text-center">
-                      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-500 mx-auto mb-4"></div>
-                      <p>Processing character...</p>
-                      <p className="text-sm mt-2">{videosReady} / {totalVideos} videos ready</p>
+                      <div className="relative w-20 h-20 mx-auto mb-6">
+                        <div className="absolute inset-0 border-4 border-cyan-500/30 rounded-full"></div>
+                        <div className="absolute inset-0 border-4 border-cyan-500 rounded-full border-t-transparent animate-spin"></div>
+                      </div>
+                      <p className="text-slate-300 text-lg font-semibold mb-2">Processing Character...</p>
+                      <div className="flex items-center justify-center gap-2 text-cyan-400">
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+                      </div>
+                      <p className="text-sm text-slate-400 mt-4 font-semibold">{videosReady} / {totalVideos} animations ready</p>
                     </div>
                   ) : (
-                    <p>Upload and generate to start</p>
+                    <div className="text-center p-8">
+                      <div className="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-700">
+                        <svg className="w-10 h-10 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <p className="text-slate-400 font-semibold">Upload an image to begin</p>
+                      <p className="text-slate-500 text-sm mt-2">Your character will appear here</p>
+                    </div>
                   )}
                 </div>
               )}
