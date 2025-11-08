@@ -8,43 +8,39 @@ const REMOVEBG_API_URL = 'https://api.remove.bg/v1.0/removebg';
 
 const MOVEMENTS = {
   'walk-forward': `
-One character. Full body visible.
-Character walks straight forward continuously.
-Camera is behind the character and follows them.
-Camera distance from character is fixed and does not change at any time.
-Background: solid black, make sure you don't generate any backgrounds by yourself.
-  `.trim(),
+Full body. Use the uploaded image as the exact character reference (keep clothing, hair and colors).
+Camera: positioned behind the character at a fixed offset (no zoom, no rotation). The camera may track to keep the character centered but must keep the same distance and orientation throughout.
+Action: character walks FORWARD away from the camera continuously in a smooth looping walk cycle. The character must NOT turn, pivot, rotate, or look toward the camera at any time.
+Constraints: no additional background elements, no shadows or special effects, do not crop or alter the character's clothing.
+`.trim(),
 
   'walk-backward': `
-One character. Full body visible.
-Character walks straight forward continuously.
-Camera is in front of the character, facing them.
-Camera moves to maintain the same fixed distance for the entire video.
-Background: solid black, make sure you don't generate any backgrounds by yourself.
-  `.trim(),
+Full body. Use the uploaded image as the exact character reference (keep clothing, hair and colors).
+Camera: positioned in front of the character at a fixed offset (no zoom, no rotation). The camera may track to keep the character centered but must keep the same distance and orientation throughout.
+Action: character walks BACKWARD toward the camera continuously in a smooth looping backward walk cycle while still facing the camera. The character must NOT turn, pivot, or rotate away from the forward-facing orientation.
+Constraints: no additional background elements, no shadows or special effects, do not crop or alter the character's clothing.
+`.trim(),
 
   'walk-left': `
-One character. Full body visible.
-Character walks straight forward continuously. Do not rotate the character.
-Camera stays on the character’s left side, following them.
-Camera distance remains exactly constant from start to end.
-Background: solid black, make sure you don't generate any backgrounds by yourself.
-  `.trim(),
+Full body. Use the uploaded image as the exact character reference (keep clothing, hair and colors).
+Camera: placed at the character's LEFT side in a perfect side-profile (fixed offset, no tilt, no rotation, no zoom). The camera may track horizontally to keep the character centered but must maintain the same relative offset.
+Action: character faces LEFT and walks continuously LEFTWARD (i.e., moves from the right side of the frame toward the left) in a smooth looping side walk cycle. The character must NOT turn, look at the camera, pivot, or reverse direction.
+Constraints: no additional background elements, no shadows or special effects, do not crop or alter the character's clothing.
+`.trim(),
 
   'walk-right': `
-One character. Full body visible.
-Character walks straight forward continuously. Do not rotate the character.
-Camera stays on the character’s right side, following them.
-Camera distance remains exactly constant from start to end.
-Background: solid black, make sure you don't generate any backgrounds by yourself.
-  `.trim(),
+Full body. Use the uploaded image as the exact character reference (keep clothing, hair and colors).
+Camera: placed at the character's RIGHT side in a perfect side-profile (fixed offset, no tilt, no rotation, no zoom). The camera may track horizontally to keep the character centered but must maintain the same relative offset.
+Action: character faces RIGHT and walks continuously RIGHTWARD (i.e., moves from the left side of the frame toward the right) in a smooth looping side walk cycle. The character must NOT turn, look at the camera, pivot, or reverse direction.
+Constraints: no additional background elements, no shadows or special effects, do not crop or alter the character's clothing.
+`.trim(),
 
   'idle': `
-One character. Full body visible.
-Character stands still with minimal breathing.
-Camera faces character and stays at one fixed distance the entire time.
-Background: solid black, make sure you don't generate any backgrounds by yourself.
-  `.trim(),
+Full body. Use the uploaded image as the exact character reference (keep clothing, hair and colors).
+Camera: front view at a fixed offset (no zoom, no rotation). The camera must not move or track.
+Action: character stands perfectly still in neutral pose; only minimal chest/shoulder breathing allowed. No foot movement, no head turns, no weight shifts.
+Constraints: no additional background elements, no shadows or special effects, do not crop or alter the character's clothing.
+`.trim(),
 };
 
 
@@ -113,7 +109,7 @@ export async function POST(request: NextRequest) {
       const taskUUID = randomUUID();
       
       // All videos are 3 seconds for seamless looping
-      const duration = 4.0;
+      const duration = 8.0;
       
       return axios.post(
         RUNWARE_API_URL,
